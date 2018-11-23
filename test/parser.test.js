@@ -21,6 +21,16 @@ describe('The AST to rows parser', () => {
         assert.equal(JSON.stringify(actual), JSON.stringify(expected));
     });
 
+    it('is parsing an assignment expression with += and -=', () => {
+        let code = 'a+=1;a-=1;';
+        let actual = parse(parseCode(code));
+        let expected = [
+            [1, 'assignment expression', 'a', '', 'a + 1'],
+            [1, 'assignment expression', 'a', '', 'a - 1']
+        ];
+        assert.equal(JSON.stringify(actual), JSON.stringify(expected));
+    });
+
     it('is parsing a for statement', () => {
         let code = 'for (let i = 0; i < 100; i++)\n' +
             '{a = 1;}';

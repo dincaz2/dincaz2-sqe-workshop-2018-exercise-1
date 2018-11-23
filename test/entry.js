@@ -1,2 +1,2 @@
 import './code-analyzer.test';
-import './code-parser.test';
+import './parser.test';

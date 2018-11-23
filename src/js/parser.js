@@ -26,7 +26,9 @@ function block(exp) {
 }
 
 function assignmentExpression(exp) {
-    return [newRow(line(exp), 'assignment expression', parseAtomic(exp.left), '', parseAtomic(exp.right))];
+    let name = parseAtomic(exp.left);
+    let operator = exp.operator === '=' ? '' : name + ' ' + exp.operator[0] + ' ';
+    return [newRow(line(exp), 'assignment expression', name, '', operator + parseAtomic(exp.right))];
 }
 
 function expressionStatement(exp) {
