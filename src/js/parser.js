@@ -109,7 +109,7 @@ function parseAtomic(exp) {
 }
 
 function binaryExpression(exp) {
-    return parseAtomic(exp.left) + ' ' + exp.operator + ' ' + parseAtomic(exp.right);
+    return '(' + parseAtomic(exp.left) + ' ' + exp.operator + ' ' + parseAtomic(exp.right) + ')';
 }
 
 function identifier(exp) {
@@ -140,7 +140,7 @@ function atomicVariableDeclaration(exp) {
 }
 
 function atomicVariableDeclarator(exp) {
-    return parseAtomic(exp.id) + ' = ' + parseAtomic(exp.init);
+    return 'let ' + parseAtomic(exp.id) + ' = ' + parseAtomic(exp.init);
 }
 
 function atomicAssignmentExpression(exp) {

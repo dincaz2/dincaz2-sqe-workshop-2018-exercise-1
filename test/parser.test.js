@@ -36,7 +36,7 @@ describe('The AST to rows parser', () => {
             '{a = 1;}';
         let actual = parse(parseCode(code));
         let expected = [
-            [1, 'for statement', '', 'i = 0; i < 100; i++', ''],
+            [1, 'for statement', '', 'let i = 0; (i < 100); i++', ''],
             [2, 'assignment expression', 'a', '', '1']
         ];
         assert.equal(JSON.stringify(actual), JSON.stringify(expected));
@@ -53,11 +53,11 @@ describe('The AST to rows parser', () => {
 
     it('is parsing a simple if statement', () => {
         let code = 'if (X < V[mid])\n' +
-            '            high = mid - 1;';
+            '            high = (mid - 1);';
         let actual = parse(parseCode(code));
         let expected = [
-            [1, 'if statement', '', 'X < V[mid]', ''],
-            [2, 'assignment expression', 'high', '', 'mid - 1']
+            [1, 'if statement', '', '(X < V[mid])', ''],
+            [2, 'assignment expression', 'high', '', '(mid - 1)']
         ];
         assert.equal(JSON.stringify(actual), JSON.stringify(expected));
     });
@@ -71,10 +71,10 @@ describe('The AST to rows parser', () => {
             '            mid = 0;';
         let actual = parse(parseCode(code));
         let expected = [
-            [1, 'if statement', '', 'X < V[mid]', ''],
-            [2, 'assignment expression', 'high', '', 'mid - 1'],
-            [3, 'else if statement', '', 'X > V[mid]', ''],
-            [4, 'assignment expression', 'low', '', 'mid + 1'],
+            [1, 'if statement', '', '(X < V[mid])', ''],
+            [2, 'assignment expression', 'high', '', '(mid - 1)'],
+            [3, 'else if statement', '', '(X > V[mid])', ''],
+            [4, 'assignment expression', 'low', '', '(mid + 1)'],
             [6, 'assignment expression', 'mid', '', '0']
         ];
         assert.equal(JSON.stringify(actual), JSON.stringify(expected));
@@ -149,8 +149,8 @@ describe('The AST to rows parser', () => {
             '       }';
         let actual = parse(parseCode(code));
         let expected = [
-            [1, 'while statement', '', 'low <= high', ''],
-            [2, 'assignment expression', 'mid', '', 'low + high / 2']
+            [1, 'while statement', '', '(low <= high)', ''],
+            [2, 'assignment expression', 'mid', '', '((low + high) / 2)']
         ];
         assert.equal(JSON.stringify(actual), JSON.stringify(expected));
     });
@@ -161,8 +161,8 @@ describe('The AST to rows parser', () => {
             '} while (low <= high);';
         let actual = parse(parseCode(code));
         let expected = [
-            [1, 'do while statement', '', 'low <= high', ''],
-            [2, 'assignment expression', 'mid', '', 'low + high / 2']
+            [1, 'do while statement', '', '(low <= high)', ''],
+            [2, 'assignment expression', 'mid', '', '((low + high) / 2)']
         ];
         assert.equal(JSON.stringify(actual), JSON.stringify(expected));
     });
@@ -207,13 +207,13 @@ describe('The AST to rows parser', () => {
             [2, 'variable declaration', 'high', '', ''],
             [2, 'variable declaration', 'mid', '', ''],
             [3, 'assignment expression', 'low', '', 'high = 0'],
-            [4, 'assignment expression', 'high', '', 'n - 1'],
-            [5, 'while statement', '', 'low <= high', ''],
-            [6, 'assignment expression', 'mid', '', 'low + high / 2'],
-            [7, 'if statement', '', 'X < V[mid]', ''],
-            [8, 'assignment expression', 'high', '', 'mid - 1'],
-            [9, 'else if statement', '', 'X > V[mid]', ''],
-            [10, 'assignment expression', 'low', '', 'mid + 1'],
+            [4, 'assignment expression', 'high', '', '(n - 1)'],
+            [5, 'while statement', '', '(low <= high)', ''],
+            [6, 'assignment expression', 'mid', '', '((low + high) / 2)'],
+            [7, 'if statement', '', '(X < V[mid])', ''],
+            [8, 'assignment expression', 'high', '', '(mid - 1)'],
+            [9, 'else if statement', '', '(X > V[mid])', ''],
+            [10, 'assignment expression', 'low', '', '(mid + 1)'],
             [12, 'return statement', '', '', 'mid'],
             [14, 'return statement', '', '', '-1'],
         ];
